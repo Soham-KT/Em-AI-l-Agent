@@ -3,6 +3,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_google_community import GmailToolkit
 from langchain.agents import create_agent
 from pydantic import BaseModel, Field
+import re
 
 model = ChatOllama(model='llama3.1')
 
@@ -30,7 +31,9 @@ def get_subject_and_body(topic: str) -> tuple:
 
     res = chain.invoke({'topic': topic})
 
-    return (res.subject, res.body)
+    body = res.body.encode('utf-8').decode('unicode_escape')
+
+    return (res.subject, body)
 
 def send_mail(topic: str) -> None:
     mail = get_subject_and_body(topic)
@@ -49,9 +52,11 @@ You will receive:
 
 Rules:
 - If ACTION is DRAFT → create a Gmail draft ONLY
-- If ACTION is SEND → send the email
+- If ACTION is SEND → send the Gmail to the specified Gmail ID
 - Do NOT modify subject or body
+- Use the subject and body given 
 - Do NOT ask questions
+- The format of Body should not change. That includes the all the characters, unicode characters, symbols, etc
 """
 )
     gmail_query = f"Topic:{topic}\nSubject: {mail[0]}\nBody: {mail[1]}. Do not change the subject and body provided"
@@ -63,6 +68,7 @@ Rules:
 
     for event in events:
         event["messages"][-1].pretty_print()
+
 
 if __name__ == '__main__':
     res = send_mail('write a mail to john doe, his mail: johndoe@fake.com. Discussing about explaining black holes')
