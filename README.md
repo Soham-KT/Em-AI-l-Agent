@@ -1,6 +1,6 @@
-# Em-AI-l-Agent
+# Em(AI)l Agent
 
-Em-AI-l-Agent is a Python-based AI agent that leverages Large Language Models (LLMs) to automatically draft and send emails. It is controlled via a simple Telegram bot interface, allowing users to send complex email requests using natural language.
+Em(AI)l Agent is a Python-based AI agent that leverages Large Language Models (LLMs) to automatically draft and send emails. It is controlled via a simple Telegram bot interface, allowing users to send complex email requests using natural language.
 
 ## How It Works
 
